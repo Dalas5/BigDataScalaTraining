@@ -31,8 +31,8 @@ object AmazonEDA {
       .master("local[*]")
       .getOrCreate()
 
-    val project_path = "/home/dalas/Downloads/amazon/archive"
-    val target_path = "/home/dalas/Downloads/amazon/results"
+    val project_path = "src/main/resources/data/amazon/archive"
+    val target_path = "src/main/resources/data/amazon-results"
 
     // Set the log level to only print errors
     spark.sparkContext.setLogLevel("ERROR")
