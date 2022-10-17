@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1666007375430,"sparkVersion":"3.0.2","uid":"vecAssembler_bc102578653d","paramMap":{"inputCols":["avg_wordvec"],"outputCol":"features"},"defaultParamMap":{"handleInvalid":"error","outputCol":"vecAssembler_bc102578653d__output"}}
