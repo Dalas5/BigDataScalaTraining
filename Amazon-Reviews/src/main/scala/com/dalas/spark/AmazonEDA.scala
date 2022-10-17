@@ -27,7 +27,7 @@ object AmazonEDA {
 
 
     val spark = SparkSession.builder()
-      .appName("Amazon Dataset Exploration")
+      .appName("Amazon Exploratory Data Analysis")
       .master("local[*]")
       .getOrCreate()
 
