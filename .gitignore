@@ -400,5 +400,7 @@ spark-warehouse/
 # For SBT
 .jvmopts
 
+# Custom
+amazon/
 
 # End of https://www.toptal.com/developers/gitignore/api/sbt,scala,spark,intellij,jupyternotebooks,python
