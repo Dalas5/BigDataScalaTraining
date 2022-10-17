@@ -15,16 +15,15 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 
 object AmazonNLP extends App {
 
-  // Set the log level to only print errors
-  Logger.getLogger("org").setLevel(Level.ERROR)
-
-
   // Create a SparkSession using every core of the local machine
   val spark = SparkSession
     .builder
     .appName("Amazon Sentiment Analysis")
     .master("local[*]")
     .getOrCreate()
+
+  // Set the log level to only print errors
+  spark.sparkContext.setLogLevel("ERROR")
 
   val amazonSchema = new StructType()
     .add("marketplace", StringType, nullable = true)

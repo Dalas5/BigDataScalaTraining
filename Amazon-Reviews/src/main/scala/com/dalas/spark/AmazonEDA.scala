@@ -22,10 +22,6 @@ object AmazonEDA {
     // Start time
     val t1 = System.nanoTime()
 
-    // Set the log level to only print errors
-    Logger.getLogger("org").setLevel(Level.ERROR)
-
-
     val spark = SparkSession.builder()
       .appName("Amazon Exploratory Data Analysis")
       .master("local[*]")
