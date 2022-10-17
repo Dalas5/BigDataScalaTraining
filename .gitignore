@@ -204,7 +204,7 @@ docs/_build/
 
 # PyBuilder
 .pybuilder/
-target/
+# target/
 
 # Jupyter Notebook
 
@@ -400,7 +400,7 @@ spark-warehouse/
 # For SBT
 .jvmopts
 
-# Custom
+# Custom added
 amazon/
 
 # End of https://www.toptal.com/developers/gitignore/api/sbt,scala,spark,intellij,jupyternotebooks,python
