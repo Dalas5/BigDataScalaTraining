@@ -1,0 +1,142 @@
+# Commands executed to updload eda-results directory over to GCS Bucket
+
+gsutil -m cp -r ./eda-results gs://dalas-amazon-reviews
+
+
+# Commands executed in GCP Cloud Console for Dataflow Pipelines execution
+
+
+## 1. avg_product_rating table
+
+SCHEMA: product_category:STRING,product_id:STRING,avg_stars:FLOAT64
+
+python avg_product_rating_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/avg-product-rating/*.snappy.parquet \
+  --output test_dataset.avg_product_rating \
+  --schema product_category:STRING,product_id:STRING,avg_stars:FLOAT64 \
+  --save_main_session
+  
+  
+  ## 2. Describe table
+  
+  SCHEMA: summary:STRING,star_rating:STRING,helpful_votes:STRING,total_votes:STRING
+  
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/describe/*.parquet \
+  --output test_dataset.describe \
+  --schema summary:STRING,star_rating:STRING,helpful_votes:STRING,total_votes:STRING \
+  --save_main_session
+  
+  
+  
+  ## 3. Null_count table
+  
+  SCHEMA: marketplace:INT64,customer_id:INT64,review_id:INT64,product_id:INT64,product_parent:INT64,product_title:INT64,product_category:INT64,star_rating:INT64,helpful_votes:INT64,total_votes:INT64,vine:INT64,verified_purchase:INT64,review_headline:INT64,review_body:INT64,review_date:INT64,int_star_rating:INT64
+  
+  
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/null-count/*.parquet \
+  --output test_dataset.null_count\
+  --schema marketplace:INT64,customer_id:INT64,review_id:INT64,product_id:INT64,product_parent:INT64,product_title:INT64,product_category:INT64,star_rating:INT64,helpful_votes:INT64,total_votes:INT64,vine:INT64,verified_purchase:INT64,review_headline:INT64,review_body:INT64,review_date:INT64,int_star_rating:INT64 \
+  --save_main_session
+  
+  
+  ## 4. Produt_Performance table
+  
+  
+  SCHEMA: product_id:STRING,star_rating:FLOAT64
+  
+  
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/product-performance/*.parquet \
+  --output test_dataset.product_performance\
+  --schema product_id:STRING,star_rating:FLOAT64 \
+  --save_main_session
+  
+  
+  
+  ## 5. Review_qty_evolution table
+  
+  SCHEMA: year:INT64,product_category:STRING,review_count:INT64
+  
+  
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/review-qty-evolution/*.parquet \
+  --output test_dataset.review_qty_evolution \
+  --schema year:INT64,product_category:STRING,review_count:INT64 \
+  --save_main_session
+  
+  
+  
+  
+  ## 6. Star_rating_dist table
+  
+  
+  SHEMA: product_id:STRING,star_rating:FLOAT64
+  
+    
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/star-rating-dist/*.parquet \
+  --output test_dataset.star_rating_dist \
+  --schema product_id:STRING,star_rating:FLOAT64\
+  --save_main_session
+  
+  
+  ## 7. Verified_bias table
+  
+  
+  SCHEMA: verified_purchase:STRING,product_category:STRING,avg_rating:FLOAT64  
+  
+  
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/verified-bias/*.parquet \
+  --output test_dataset.verified_bias \
+  --schema verified_purchase:STRING,product_category:STRING,avg_rating:FLOAT64\
+  --save_main_session
+  
+  
+  
+  ## 8. word_count table
+  
+  
+  word_count:INT64,review_count:INT64
+  
+  
+  python eda_results_parquet_pipeline.py \
+  --project=$PROJECT --region=us-central1 \
+  --runner=DataflowRunner \
+  --staging_location=gs://$PROJECT/test \
+  --temp_location gs://$PROJECT/test \
+  --input gs://dalas-amazon-reviews/eda-results/word-count/*.parquet \
+  --output test_dataset.word_count \
+  --schema word_count:INT64,review_count:INT64 \
+  --save_main_session
+  
