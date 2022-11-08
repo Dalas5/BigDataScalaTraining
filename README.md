@@ -330,3 +330,93 @@ The constrains considered are:
 
 Logistic Regression was used as it is often a good starting point.
 
+
+
+
+
+# Google Cloud Platform Workflow
+
+
+<hr style=\"border:0.5px solid gray\"> </hr>
+
+GCP was selected to perform further analysis on result tables from the Exploratory Data Analysis done in Spark. The straightforward architecture chosen is described in the chart below.
+
+![Untitled](./Visualizations/9.GCP-Architecture.png)
+
+
+All folders containing parquet partitions from the EDA performed in spark were uploaded to a standard-tier GCS bucket, with the help of the below command.
+
+```bash
+gsutil -m cp -r ./eda-results gs://dalas-amazon-reviews
+```
+
+The result is displayed below.
+
+![Untitled](./Visualizations/10.GCP-Bucket.png)
+
+![Untitled](./Visualizations/14.Additional-bucket-file.png)
+
+The analysis tables to be uploaded and processed in BigQuery are:
+
+- avg-product-rating
+- describe
+- null-count
+- product-performance
+- review-qty-evolution
+- star-rating-dist
+- verified-bias
+- word-count
+
+For straightforward read and write from parquet files to BigQuery, the following core code was issued in a python pipeline for Dataflow.
+
+```python
+    # Initiate the pipeline using the pipeline arguments passed in from the
+    # command line. This includes information such as the project ID and
+    # where Dataflow should store temp files.
+    p = beam.Pipeline(options=PipelineOptions(pipeline_args))    
+
+    (p
+     # Read the file. This is the source of the pipeline.
+     # We use the input
+     # argument from the command line.
+
+     | 'Read from Parquet file' >> beam.io.ReadFromParquet(known_args.input) 
+     | 'Write to BigQuery' >> beam.io.Write(beam.io.BigQuerySink(
+             # The table name is a required argument for the BigQuery sink.
+             # In this case we use the value passed in from the command line.
+             known_args.output,
+             # Here we use the simplest way of defining a schema:
+             # fieldName:fieldType
+             schema=known_args.schema,           
+             # Creates the table in BigQuery if it does not yet exist.
+             create_disposition = beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+             # Deletes all data in the BigQuery table before writing.
+             write_disposition = beam.io.BigQueryDisposition.WRITE_TRUNCATE)))
+    p.run().wait_until_finish()
+```
+The full python file can be found in [eda_results_parquet_pipeline.py](./GCP/Dataflow/eda_results_parquet_pipeline.py) 
+
+The pipeline execution is customized with the help of parameters such as input file(s), output BigQuery table, and a schema string for thar particular table read and written.
+
+You can check the schemas and commands that were executed in the [pipeline-commands](./GCP/Dataflow/pipeline-commands.txt) file.
+
+The job that took the longest to process (with as much as 11 min) is the one corresponding to the Star Ratig Distribution query. As shown below
+
+![Untitled](./Visualizations/11.Dataflow-jobs.png)
+
+The Automatic Horizontal Scaling feature of Dataflow did it's work as more workers were spinned up to process the entire query as time progressed.
+
+![Untitled](./Visualizations/12.star-rating-dist-job.png)
+
+This dataflow job, among others, will be further examined to be optimized as a tunning exercise. There needs to be balance between resources consumed and processing time in accordance to project objectives and SLAs.
+
+The final result is having all EDA tables loaded in GCP for further visual analysis.
+
+![Untitled](./Visualizations/13.BQ-tables.png)
+
+
+
+
+
+
+
