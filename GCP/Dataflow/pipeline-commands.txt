@@ -34,6 +34,7 @@ python avg_product_rating_parquet_pipeline.py \
   --output test_dataset.describe \
   --schema summary:STRING,star_rating:STRING,helpful_votes:STRING,total_votes:STRING \
   --save_main_session
+
   
   
   
@@ -102,8 +103,9 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/star-rating-dist/*.parquet \
   --output test_dataset.star_rating_dist \
-  --schema product_id:STRING,star_rating:FLOAT64\
+  --schema product_id:STRING,star_rating:FLOAT64,review_date=STRING \
   --save_main_session
+  --job_name=avgstardistpartition300
   
   
   ## 7. Verified_bias table
