@@ -93,7 +93,7 @@ python avg_product_rating_parquet_pipeline.py \
   ## 6. Star_rating_dist table
   
   
-  SHEMA: product_id:STRING,star_rating:FLOAT64
+  SHEMA: product_id:STRING,star_rating:FLOAT64,review_date=STRING
   
     
   python eda_results_parquet_pipeline.py \
