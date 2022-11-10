@@ -113,9 +113,9 @@ object AmazonEDA {
 
     // Q2 Star Rating distribution
 
-    val starRatingDist = CleanAmazonDF.select("product_id", "star_rating")
+    val starRatingDist = CleanAmazonDF.select("product_id", "star_rating", "review_date")
 
-    starRatingDist.write
+    starRatingDist.repartition(300).write
       .mode(SaveMode.Overwrite)
       .save(Paths.get(target_path, "star-rating-dist").toString)
 
