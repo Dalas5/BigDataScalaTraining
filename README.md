@@ -416,6 +416,62 @@ The final result is having all EDA tables loaded in GCP for further visual analy
 
 
 
+## Optimization and Experimentation
+
+The job corresponding to the star-rating-dist table is the one that took the longest to finish, with as much as 11 min 5 secs. Various optimization measures and experiments will be executed upon this job to measue the impact in performance. But fist, the "review_date" column will be added to it's table from the source (Spark processing) to aid in future operations.
+
+### Date column parsing
+
+After adding the "review_date" column to the star-rating-dist table, the pipeline based on csv files needed an additional method to parse date strings into datetime python objetcs. Otherwise, the review_date column could appear as STRING in BigQuery, or, if a DATE Schema was specified for the BigQuery destination, the column would appear with nulls, as shown below.
+
+![Untitled](./Visualizations/15.BQWithNulls.png)
+
+An additional method could be developed to parse such dates from strings in csv records to python datetime objects, and, consecuently, for other complex data structures, custom methods will need to be developed too. Instead, it was opted to change the format to parquet tables in the source, and utilize the beam.io.ReamFromParquet from the parquetio module to try to read both data and source schema with Dataflow.
+
+When using the ReadFromParquet method, each element in the PCollection will contain a Python dictionary representing a single record. The keys will be strings with the corresponding column names. The values will be of the type defined in the corresponding Parquet schema. Records that are of simple types will be mapped into corresponding Python types.
+
+Check https://beam.apache.org/releases/pydoc/2.11.0/apache_beam.io.parquetio.html for more information regarding ReadFromParquet.
+
+A sample of 10 elements of a PCollection read using ReadFromParquet for the avg-star-rating table shows that datetime objects are effectively parsed from the parquet files to python datetime objects.
+
+```bash
+[{'product_id': 'B00DQDEJ1E', 'star_rating': '5', 'review_date': datetime.date(2014, 1, 7)}, {'product_id': 'B001ECQ69C', 'star_rating': '5', 'review_date': datetime.date(2013, 12, 22)}, {'product_id': 'B005LQIT5Q', 'star_rating': '3', 'review_date': datetime.date(2014, 10, 25)}, {'product_id': 'B001G8Y970', 'star_rating': '5', 'review_date': datetime.date(2012, 12, 18)}, {'product_id': 'B002650XNQ', 'star_rating': '5', 'review_date': datetime.date(2011, 1, 26)}, {'product_id': 'B000I5JN0A', 'star_rating': '3', 'review_date': datetime.date(2007, 1, 16)}, {'product_id': 'B004XJCXXG', 'star_rating': '5', 'review_date': datetime.date(2011, 6, 11)}, {'product_id': 'B000V0ONTI', 'star_rating': '5', 'review_date': datetime.date(2011, 7, 27)}, {'product_id': 'B0095PZHRC', 'star_rating': '2', 'review_date': datetime.date(2014, 8, 29)}, {'product_id': 'B00CLDIGPK', 'star_rating': '5', 'review_date': datetime.date(2014, 3, 6)}]
+```
+
+Allowing BiqQuery to recieve and interpret the review_date column as DATE.
+
+![Untitled](./Visualizations/16.BQwithDateColumn.png)
+
+
+
+### Data Partitioning
+
+After adding the date column, different jobs were run using different partitioning criteria.
+
+1. Default spark partitioning (which happens to be 87 partitions for this table)
+2. Even partitioning of 300 partitions
+3. Partitioning by date using the review_date column (results in 5,934 partitions)
+
+Results are shown below:
+![Untitled](./Visualizations/17.JobsWithDifferentPartitioning.png)
+
+The starting point is the job with 87 partitions, which lasted 12 min 49 sec. The job corresponding to the repartition onto 300 partitions of the data took 11 min and 56 sec to complete, reducing the time by almost a minute. Lastly, the job that used the review_date partitioning criteria took as much as 22 min 49 sec to complete. Given that this dataset contains reviews from 1998 to 2015, partitioning by date becomes cumbersome and too many partitions with little data are created, this i/o overhead caused the job to take the longest to complete.
+
+
+### Compressed vs uncompressed data job performance
+
+In cloud computing, compute and storage expenses are treated differently. When it comes to batch processing, storing the data is needed first and later compute services are deployed. If the data is compressed beforehand in storage, it incurs in less storage expense, but, on the other hand, it needs more time to be processed as it needs to be decompressed on the go, increasing compute expenses. In general, storage resources are much more cheaper than compute resources. Keeping data as uncompressed as posible in storage helps improve processing time and the overall expense is minimized.
+
+This ideas led to a test of processing time of compressed data vs uncompressed data. By default, previous jobs processed snappy parquet data (with 235 MB of weight), i.e already compressed data. The dataset was reprocessed on the source and stored as parquet file without compression (with 445 MB of weight) to deliver the job shown below.
+
+![Untitled](./Visualizations/18.jobUncompressedData.png)
+
+The elapsed time for this job was 11 min 43 sec, just 13 sec below the 11 min 56 sec that took the original 300-partitioned job to complete. This is not a big difference but no conclusion should be drawn from this test as the dataset is too small.
+
+
+
+
+
 
 
 
