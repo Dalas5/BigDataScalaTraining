@@ -93,7 +93,7 @@ python avg_product_rating_parquet_pipeline.py \
   ## 6. Star_rating_dist table
   
   
-  SHEMA: product_id:STRING,star_rating:FLOAT64,review_date=STRING
+  SHEMA: product_id:STRING,star_rating:FLOAT64,review_date=DATE
   
     
   python eda_results_parquet_pipeline.py \
@@ -103,7 +103,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/star-rating-dist/*.parquet \
   --output test_dataset.star_rating_dist \
-  --schema product_id:STRING,star_rating:FLOAT64,review_date=STRING \
+  --schema product_id:STRING,star_rating:FLOAT64,review_date=DATE \
   --save_main_session
   --job_name=avgstardistpartition300
   
