@@ -34,12 +34,12 @@ def parse_json_schema(schema_uri):
 def parse_method(row_string, keys, types):
     values = re.split(",", re.sub('\r\n', '', re.sub('"', '', row_string)))
 
-    i = 0
-    for value in values:
-        if types[i] == 'DATE':
-            values[i] = datetime.strptime(value, '%Y-%m-%d').date()
+    # i = 0
+    # for value in values:
+    #     if types[i] == 'DATE':
+    #         values[i] = datetime.strptime(date_str, '%Y-%m-%d').date().strftime('%Y-%m-%d')
 
-        i += 1
+    #     i += 1
 
     row = dict(zip(keys, values))
     return row
