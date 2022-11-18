@@ -426,7 +426,7 @@ After adding the "review_date" column to the star-rating-dist table, the pipelin
 
 ![Untitled](./Visualizations/15.BQWithNulls.png)
 
-An additional method could be developed to parse such dates from strings in csv records to python datetime objects, and, consecuently, for other complex data structures, custom methods will need to be developed too. Instead, it was opted to change the format to parquet tables in the source, and utilize the beam.io.ReamFromParquet from the parquetio module to try to read both data and source schema with Dataflow.
+An additional method could be developed to parse such dates from strings in csv records to python datetime objects, and, consecuently, for other complex data structures, custom methods will need to be developed too (You can check the solution at [eda_results_csv_pipeline.py](./GCP/Dataflow/eda_results_csv_pipeline.py)). Instead, it was opted to change the format to parquet tables in the source, and utilize the beam.io.ReamFromParquet from the parquetio module to try to read both data and source schema with Dataflow.
 
 When using the ReadFromParquet method, each element in the PCollection will contain a Python dictionary representing a single record. The keys will be strings with the corresponding column names. The values will be of the type defined in the corresponding Parquet schema. Records that are of simple types will be mapped into corresponding Python types.
 
