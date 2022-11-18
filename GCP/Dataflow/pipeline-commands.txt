@@ -17,7 +17,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/avg-product-rating/*.snappy.parquet \
   --output test_dataset.avg_product_rating \
-  --schema product_category:STRING,product_id:STRING,avg_stars:FLOAT64 \
+  --schema gs://dalas-amazon-reviews/schemas/avg_product_rating.json \
   --save_main_session
   
   
@@ -32,7 +32,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/describe/*.parquet \
   --output test_dataset.describe \
-  --schema summary:STRING,star_rating:STRING,helpful_votes:STRING,total_votes:STRING \
+  --schema gs://dalas-amazon-reviews/schemas/describe.json \
   --save_main_session
 
   
@@ -50,7 +50,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/null-count/*.parquet \
   --output test_dataset.null_count\
-  --schema marketplace:INT64,customer_id:INT64,review_id:INT64,product_id:INT64,product_parent:INT64,product_title:INT64,product_category:INT64,star_rating:INT64,helpful_votes:INT64,total_votes:INT64,vine:INT64,verified_purchase:INT64,review_headline:INT64,review_body:INT64,review_date:INT64,int_star_rating:INT64 \
+  --schema gs://dalas-amazon-reviews/schemas/null_count.json \
   --save_main_session
   
   
@@ -67,7 +67,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/product-performance/*.parquet \
   --output test_dataset.product_performance\
-  --schema product_id:STRING,star_rating:FLOAT64 \
+  --schema gs://dalas-amazon-reviews/schemas/product_performance.json \
   --save_main_session
   
   
@@ -84,7 +84,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/review-qty-evolution/*.parquet \
   --output test_dataset.review_qty_evolution \
-  --schema year:INT64,product_category:STRING,review_count:INT64 \
+  --schema gs://dalas-amazon-reviews/schemas/review_qty_evolution.json \
   --save_main_session
   
   
@@ -103,7 +103,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/star-rating-dist/*.parquet \
   --output test_dataset.star_rating_dist \
-  --schema product_id:STRING,star_rating:FLOAT64,review_date=DATE \
+  --schema gs://dalas-amazon-reviews/schemas/star-rating-dist.json \
   --save_main_session
   --job_name=avgstardistpartition300
   
@@ -121,7 +121,7 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/verified-bias/*.parquet \
   --output test_dataset.verified_bias \
-  --schema verified_purchase:STRING,product_category:STRING,avg_rating:FLOAT64\
+  --schema gs://dalas-amazon-reviews/schemas/verified_bias.json \
   --save_main_session
   
   
@@ -139,6 +139,6 @@ python avg_product_rating_parquet_pipeline.py \
   --temp_location gs://$PROJECT/test \
   --input gs://dalas-amazon-reviews/eda-results/word-count/*.parquet \
   --output test_dataset.word_count \
-  --schema word_count:INT64,review_count:INT64 \
+  --schema gs://dalas-amazon-reviews/schemas/word_count.json \
   --save_main_session
   

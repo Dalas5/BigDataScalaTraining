@@ -2,12 +2,15 @@
 contents to a BigQuery table.
 """
 
+import json
 import argparse
 import logging
+import re
 import pandas as pd
 import pyarrow
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
+from google.cloud.storage import Client
 
 
 def run(argv=None):
@@ -27,7 +30,6 @@ def run(argv=None):
         help='Input file to read. This can be a local file or '
         'a file in a Google Storage Bucket.',
         default='gs://dalas-amazon-reviews/eda-results/avg-product-rating/part-00002-65a944df-d8c2-4b39-873c-1f3a57a87684-c000.snappy.parquet')
-        
 
     parser.add_argument('--output',
                         dest='output',
@@ -40,37 +42,48 @@ def run(argv=None):
                         required=True,
                         help='Output BQ table schema string definition')
 
-
     # Parse arguments from the command line.
     known_args, pipeline_args = parser.parse_known_args(argv)
 
-    
+    # Setting schema
+    schema_uri = known_args.schema
+    path_match = re.match(r"gs://(.*?)/(.*)", schema_uri)
+    if path_match:
+        bucket, schema_path = path_match.groups()
+
+    client = Client()
+    bucket = client.get_bucket(bucket)
+    blob = bucket.blob(schema_path)
+    download_file = blob.download_as_text(encoding="utf-8")
+
+    json_schema = json.loads(download_file)
+    schema = {"fields": json_schema}
+
     # Initiate the pipeline using the pipeline arguments passed in from the
     # command line. This includes information such as the project ID and
     # where Dataflow should store temp files.
-    p = beam.Pipeline(options=PipelineOptions(pipeline_args))    
+    p = beam.Pipeline(options=PipelineOptions(pipeline_args))
 
     (p
      # Read the file. This is the source of the pipeline.
      # We use the input
      # argument from the command line.
 
-     | 'Read from Parquet file' >> beam.io.ReadFromParquet(known_args.input) 
-     | 'Write to BigQuery' >> beam.io.Write(beam.io.BigQuerySink(
-             # The table name is a required argument for the BigQuery sink.
-             # In this case we use the value passed in from the command line.
-             known_args.output,
-             # Here we use the simplest way of defining a schema:
-             # fieldName:fieldType
-             schema=known_args.schema,           
-             # Creates the table in BigQuery if it does not yet exist.
-             create_disposition = beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-             # Deletes all data in the BigQuery table before writing.
-             write_disposition = beam.io.BigQueryDisposition.WRITE_TRUNCATE)))
+     | 'Read from Parquet file' >> beam.io.ReadFromParquet(known_args.input)
+     | 'Write to BigQuery' >> beam.io.WriteToBigQuery(
+         # The table name is a required argument for the BigQuery sink.
+         # In this case we use the value passed in from the command line.
+         known_args.output,
+         # Here we use the simplest way of defining a schema:
+         # fieldName:fieldType
+         schema=schema,
+         # Creates the table in BigQuery if it does not yet exist.
+         create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+         # Deletes all data in the BigQuery table before writing.
+         write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE))
     p.run().wait_until_finish()
 
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
     run()
-
