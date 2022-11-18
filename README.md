@@ -381,24 +381,24 @@ For straightforward read and write from parquet files to BigQuery, the following
      # argument from the command line.
 
      | 'Read from Parquet file' >> beam.io.ReadFromParquet(known_args.input) 
-     | 'Write to BigQuery' >> beam.io.Write(beam.io.BigQuerySink(
+     | 'Write to BigQuery' >> beam.io.WriteToBigQuery(
              # The table name is a required argument for the BigQuery sink.
              # In this case we use the value passed in from the command line.
              known_args.output,
              # Here we use the simplest way of defining a schema:
              # fieldName:fieldType
-             schema=known_args.schema,           
+             schema=schema,           
              # Creates the table in BigQuery if it does not yet exist.
              create_disposition = beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
              # Deletes all data in the BigQuery table before writing.
-             write_disposition = beam.io.BigQueryDisposition.WRITE_TRUNCATE)))
+             write_disposition = beam.io.BigQueryDisposition.WRITE_TRUNCATE))
     p.run().wait_until_finish()
 ```
 The full python file can be found in [eda_results_parquet_pipeline.py](./GCP/Dataflow/eda_results_parquet_pipeline.py) 
 
 The pipeline execution is customized with the help of parameters such as input file(s), output BigQuery table, and a schema string for thar particular table read and written.
 
-You can check the schemas and commands that were executed in the [pipeline-commands](./GCP/Dataflow/pipeline-commands.txt) file.
+You can check the schemas and commands that were executed in the [schemas](./GCP/Dataflow/schemas) folder and the [pipeline-commands](./GCP/Dataflow/pipeline-commands.txt) file respectively.
 
 The job that took the longest to process (with as much as 11 min) is the one corresponding to the Star Ratig Distribution query. As shown below
 
