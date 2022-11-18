@@ -1,0 +1,27 @@
+[
+  {
+    "name": "summary",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "summary type"
+  },
+  {
+    "name": "star_rating",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "statistical summary of star_rating column"
+  },
+  {
+    "name": "helpful_votes",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "statistical summary of helpful_votes column"
+  },
+  {
+    "name": "total_votes",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "statistical summary of total_votes column"
+  }
+]
+

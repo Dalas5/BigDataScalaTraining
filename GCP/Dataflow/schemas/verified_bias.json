@@ -1,0 +1,21 @@
+[
+  {
+    "name": "verified_purchase",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "verified purchase identifier"
+  },
+  {
+    "name": "product_category",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "product category name"
+  },
+  {
+    "name": "avg_rating",
+    "type": "FLOAT64",
+    "mode": "NULLABLE",
+    "description": "average star rating"
+  }
+]
+

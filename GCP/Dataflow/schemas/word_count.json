@@ -1,0 +1,15 @@
+[
+  {
+    "name": "word_count",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "word count of the review body"
+  },
+  {
+    "name": "review_count",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "count of reviews containing a word_count number"
+  }
+]
+

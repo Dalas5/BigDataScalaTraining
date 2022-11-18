@@ -1,0 +1,99 @@
+[
+  {
+    "name": "marketplace",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of marketplace column"
+  },
+  {
+    "name": "customer_id",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of customer_id column"
+  },
+  {
+    "name": "review_id",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of review_id column"
+  },
+  {
+    "name": "product_id",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of product_id column"
+  },
+  {
+    "name": "product_parent",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of product_parent column"
+  },
+  {
+    "name": "product_title",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of product_title column"
+  },
+    {
+    "name": "product_category",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of product_category column"
+  },
+  {
+    "name": "star_rating",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of star_rating column"
+  },
+  {
+    "name": "helpful_votes",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of helpful_votes column"
+  },
+  {
+    "name": "total_votes",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of total_votes column"
+  },
+  {
+    "name": "vine",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of vine column"
+  },
+  {
+    "name": "verified_purchase",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of verified_purchase column"
+  },
+  {
+    "name": "review_headline",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of review_headline column"
+  },
+  {
+    "name": "review_body",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of review_body column"
+  },
+  {
+    "name": "review_date",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of review_date column"
+  },
+  {
+    "name": "int_star_rating",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "nullcount of int_star_rating column"
+  }
+]
+

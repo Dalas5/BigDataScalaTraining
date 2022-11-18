@@ -1,0 +1,21 @@
+[
+  {
+    "name": "product_category",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "product category name"
+  },
+  {
+    "name": "product_id",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "unique product identification code"
+  },
+  {
+    "name": "avg_stars",
+    "type": "FLOAT64",
+    "mode": "NULLABLE",
+    "description": "average star rating"
+  }
+]
+

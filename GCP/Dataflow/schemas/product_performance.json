@@ -1,0 +1,15 @@
+[
+  {
+    "name": "product_id",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "unique product identification code"
+  },
+  {
+    "name": "star_rating",
+    "type": "FLOAT64",
+    "mode": "NULLABLE",
+    "description": "review rating from 1 - 5"
+  }
+]
+

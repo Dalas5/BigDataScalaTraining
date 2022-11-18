@@ -1,0 +1,21 @@
+[
+  {
+    "name": "year",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "year of the review"
+  },
+  {
+    "name": "product_category",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "product category name"
+  },
+  {
+    "name": "review_count",
+    "type": "INT64",
+    "mode": "NULLABLE",
+    "description": "count of total reviews"
+  }
+]
+
