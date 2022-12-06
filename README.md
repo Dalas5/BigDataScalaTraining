@@ -313,6 +313,7 @@ From the results, it can be inferred that a constant bias of about 0.5 star rati
 
 ![Untitled](./Visualizations/8.AvgRatingByVerifiedPurchase-BarPlot.png)
 
+For more exploratory visualizations checkout the Tableau Public dashboard designed for this dataset: https://public.tableau.com/views/Amazon-reviews/Anlisis?:language=en-US&:display_count=n&:origin=viz_share_link
 
 # Sentiment Analysis
 <hr style=\"border:0.5px solid gray\"> </hr>
